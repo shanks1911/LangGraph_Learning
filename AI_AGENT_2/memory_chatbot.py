@@ -23,3 +23,38 @@ llm = ChatGoogleGenerativeAI(
 
 def process(state: AgentState) -> AgentState:
     """This node will solve the request that you input"""
+
+    response = llm.invoke(input=state["messages"])
+
+    state["messages"].append(AIMessage(content=response.content))
+
+    print(f"AI: {response.content}")
+
+    return state
+
+graph = StateGraph(AgentState)
+graph.add_node("process", process)
+graph.add_edge(START, "process")
+graph.add_edge("process", END)
+
+agent = graph.compile()
+
+convo_history = []
+
+
+# the entire conversation history is passed to the model
+user_input = input("\nEnter your Question (bye to exit): ")
+while user_input != "bye":
+    convo_history.append(HumanMessage(content=user_input))
+    result = agent.invoke({"messages": convo_history})
+    convo_history = result["messages"]
+    user_input = input("\nEnter your Question (bye to exit): ")
+
+with open("./AI_AGENT_2/memory_chatbot_history.txt", "w") as f:
+    for msg in convo_history:
+        if isinstance(msg, HumanMessage):
+            f.write(f"Human: {msg.content}\n")
+        elif isinstance(msg, AIMessage):
+            f.write(f"AI: {msg.content}")
+    
+print(f"Chatbot history saved to memory_chatbot_history.txt")

@@ -15,5 +15,7 @@ Here are some of the projects you'll find in this repository:
 * **Agent_5:** A looping agent that can repeat a task multiple times, illustrating how to create more complex workflows.
 * **AI_AGENT_1:** A simple chatbot that can answer your questions.
 * **AI_AGENT_2:** A chatbot with memory, demonstrating how to create a more engaging and personalized user experience.
+* **AI_AGENT_3:** A chatbot with tools, demonstrating how tools can be integrated into the graph and how LLMs can call and use these tools.
+
 
 ---
